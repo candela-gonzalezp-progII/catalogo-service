@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgres-catalogo:
+    image: postgres:16
+    container_name: catalogo_db_container
+    environment:
+      POSTGRES_USER: mi_usuario
+      POSTGRES_PASSWORD: mi_password
+      POSTGRES_DB: catalogo_db
+    ports:
+      - "5432:5432"
+    restart: always
+
+
+#Docker descarga y levanta una bd PostgreSQL en puerto 5432, con usuario, contraseña y nombre de bd
