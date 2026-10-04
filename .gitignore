@@ -4,6 +4,7 @@
 # Log file
 *.log
 
+
 .env
 
 # BlueJ files
@@ -63,4 +64,3 @@ out/
 
 
 
-.env.example
