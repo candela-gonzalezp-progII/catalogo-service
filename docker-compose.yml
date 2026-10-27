@@ -3,9 +3,19 @@ services:
     image: postgres:16
     container_name: catalogo_db_container
     environment:
-      POSTGRES_USER: candela
-      POSTGRES_PASSWORD: catalogo2026
-      POSTGRES_DB: catalogo_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-catalogo_db}
     ports:
-      - "5433:5432"
-    restart: always
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      - catalogo_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME:-catalogo_db}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  catalogo_pgdata:
