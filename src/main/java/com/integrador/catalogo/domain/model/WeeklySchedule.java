@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 /**
  * Bloque de horario semanal recurrente de un profesional.
- * Representa, por ejemplo: "Lunes de 09:00 a 13:00".
+ * Representa, por ejemplo: "Lunes de 09:00 a 13:00, turnos de 30 minutos".
  */
 public class WeeklySchedule {
 
@@ -14,9 +14,12 @@ public class WeeklySchedule {
     private final DayOfWeek dayOfWeek;
     private final LocalTime startTime;
     private final LocalTime endTime;
+    private final int slotDurationMinutes;
+    private final boolean active;
 
     public WeeklySchedule(Long id, Long professionalId, DayOfWeek dayOfWeek,
-                           LocalTime startTime, LocalTime endTime) {
+                          LocalTime startTime, LocalTime endTime,
+                          int slotDurationMinutes, boolean active) {
         if (id == null) {
             throw new IllegalArgumentException("id no puede ser null");
         }
@@ -32,11 +35,16 @@ public class WeeklySchedule {
         if (!startTime.isBefore(endTime)) {
             throw new IllegalArgumentException("startTime debe ser anterior a endTime");
         }
+        if (slotDurationMinutes <= 0) {
+            throw new IllegalArgumentException("slotDurationMinutes debe ser mayor a 0");
+        }
         this.id = id;
         this.professionalId = professionalId;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.slotDurationMinutes = slotDurationMinutes;
+        this.active = active;
     }
 
     public Long getId() {
@@ -57,5 +65,13 @@ public class WeeklySchedule {
 
     public LocalTime getEndTime() {
         return endTime;
+    }
+
+    public int getSlotDurationMinutes() {
+        return slotDurationMinutes;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

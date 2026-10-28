@@ -11,14 +11,14 @@ public final class SyncStateMapper {
     public static SyncStateEntity toEntity(SyncState domain) {
         return new SyncStateEntity(
                 domain.getId(), domain.getLastSnapshotVersion(),
-                domain.getLastSyncedAt(), domain.getStatus()
+                domain.getLastSyncedAt(), domain.getStatus(), domain.getLastError()
         );
     }
 
     public static SyncState toDomain(SyncStateEntity entity) {
         return new SyncState(
                 entity.getId(), entity.getLastSnapshotVersion(),
-                entity.getLastSyncedAt(), entity.getStatus()
+                entity.getLastSyncedAt(), entity.getStatus(), entity.getLastError()
         );
     }
 }

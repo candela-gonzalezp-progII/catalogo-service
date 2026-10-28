@@ -35,4 +35,10 @@ public class WeeklyScheduleEntity {
 
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
+
+    @Column(name = "slot_duration_minutes", nullable = false)
+    private int slotDurationMinutes;
+
+    @Column(nullable = false)
+    private boolean active;
 }

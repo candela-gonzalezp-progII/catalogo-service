@@ -32,4 +32,7 @@ public class SyncStateEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private SyncStatus status;
+
+    @Column(name = "last_error", length = 500)
+    private String lastError;
 }

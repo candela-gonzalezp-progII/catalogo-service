@@ -11,14 +11,16 @@ public final class WeeklyScheduleMapper {
     public static WeeklyScheduleEntity toEntity(WeeklySchedule domain) {
         return new WeeklyScheduleEntity(
                 domain.getId(), domain.getProfessionalId(), domain.getDayOfWeek(),
-                domain.getStartTime(), domain.getEndTime()
+                domain.getStartTime(), domain.getEndTime(),
+                domain.getSlotDurationMinutes(), domain.isActive()
         );
     }
 
     public static WeeklySchedule toDomain(WeeklyScheduleEntity entity) {
         return new WeeklySchedule(
                 entity.getId(), entity.getProfessionalId(), entity.getDayOfWeek(),
-                entity.getStartTime(), entity.getEndTime()
+                entity.getStartTime(), entity.getEndTime(),
+                entity.getSlotDurationMinutes(), entity.isActive()
         );
     }
 }
