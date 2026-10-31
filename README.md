@@ -66,3 +66,11 @@ Los tests de integración usan Postgres y Redis reales con Testcontainers (no H2
 | CU-17 Estado de sincronización | en desarrollo |
 
 Casos de uso completos: `documentacion-turnos-prog2/casos-de-uso`.
+
+# Catálogo Service
+
+Servicio backend (Java + Spring Boot) responsable del catálogo de categorías, profesionales y horarios semanales, y de la sincronización completa e incremental con el servicio central de la cátedra (REST, Redis, Kafka).
+
+Proyecto integrador de Programación II
+
+**Alumno:** Candela González
