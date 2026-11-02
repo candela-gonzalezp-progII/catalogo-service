@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.integrador.catalogo.application.exception.CatedraIntegrationException;
 import com.integrador.catalogo.application.exception.CatedraUnavailableException;
 import com.integrador.catalogo.application.port.out.CatedraRedisPort;
+import com.integrador.catalogo.domain.model.Professional;
+import com.integrador.catalogo.domain.model.ProfessionalCategory;
 import com.integrador.catalogo.domain.model.SyncMetadata;
 import com.integrador.catalogo.domain.model.VersionChanges;
+import com.integrador.catalogo.domain.model.WeeklySchedule;
+import com.integrador.catalogo.infrastructure.catedra.dto.SnapshotResponse;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import tools.jackson.databind.json.JsonMapper;
@@ -26,6 +30,9 @@ public class RedisCatalogReader implements CatedraRedisPort {
     static final String OLDEST_VERSION_KEY = "catedra:sync:oldest-available-version";
     static final String METADATA_KEY = "catedra:sync:metadata";
     static final String CHANGES_KEY_PREFIX = "catedra:sync:changes:";
+    static final String CATEGORIES_HASH = "catedra:sync:professional-categories";
+    static final String PROFESSIONALS_HASH = "catedra:sync:professionals";
+    static final String SCHEDULES_HASH = "catedra:sync:weekly-schedules";
 
     private final Supplier<StringRedisTemplate> templateSupplier;
     private final JsonMapper json = JsonMapper.builder().build();
@@ -54,6 +61,41 @@ public class RedisCatalogReader implements CatedraRedisPort {
             return raw == null ? Optional.empty() : Optional.of(parseChanges(raw, version));
         } catch (RedisConnectionFailureException e) {
             throw new CatedraUnavailableException("Redis de la catedra no disponible", 0, null, e);
+        }
+    }
+
+    @Override
+    public Optional<ProfessionalCategory> readCategory(long id) {
+        return readEntity(CATEGORIES_HASH, id, SnapshotResponse.CategoryItem.class)
+                .map(SnapshotResponse.CategoryItem::toDomain);
+    }
+
+    @Override
+    public Optional<Professional> readProfessional(long id) {
+        return readEntity(PROFESSIONALS_HASH, id, SnapshotResponse.ProfessionalItem.class)
+                .map(SnapshotResponse.ProfessionalItem::toDomain);
+    }
+
+    @Override
+    public Optional<WeeklySchedule> readSchedule(long id) {
+        return readEntity(SCHEDULES_HASH, id, SnapshotResponse.ScheduleItem.class)
+                .map(SnapshotResponse.ScheduleItem::toDomain);
+    }
+
+    private <T> Optional<T> readEntity(String hash, long id, Class<T> type) {
+        try {
+            Object raw = templateSupplier.get().opsForHash().get(hash, Long.toString(id));
+            return raw == null ? Optional.empty() : Optional.of(parseEntity(raw.toString(), type, hash, id));
+        } catch (RedisConnectionFailureException e) {
+            throw new CatedraUnavailableException("Redis de la catedra no disponible", 0, null, e);
+        }
+    }
+
+    private <T> T parseEntity(String raw, Class<T> type, String hash, long id) {
+        try {
+            return json.readValue(raw, type);
+        } catch (RuntimeException e) {
+            throw new CatedraIntegrationException("JSON invalido en " + hash + " para el id " + id);
         }
     }
 
