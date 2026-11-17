@@ -46,6 +46,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'net.java.dev.jna:jna:5.14.0'
+	testImplementation 'net.java.dev.jna:jna-platform:5.14.0'
 }
 
 dependencyManagement {
