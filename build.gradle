@@ -19,7 +19,8 @@ repositories {
 }
 
 ext {
-	set('testcontainersVersion', "1.19.7")
+	set('testcontainersVersion', "1.20.1")
+	set('jna.version', "5.14.0")
 }
 
 dependencies {
