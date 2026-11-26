@@ -28,6 +28,7 @@ class ProfessionalCategoryRepositoryAdapterIT {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("security.jwt.secret", () -> "secreto-solo-para-tests-de-integracion-0123456789");
     }
 
     @Autowired
