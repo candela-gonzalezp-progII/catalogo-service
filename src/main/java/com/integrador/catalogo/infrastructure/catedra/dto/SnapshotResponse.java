@@ -24,14 +24,14 @@ public record SnapshotResponse(
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record CategoryItem(Long id, String name, String description, Boolean enabled) {
-        ProfessionalCategory toDomain() {
+        public ProfessionalCategory toDomain() {
             return new ProfessionalCategory(id, name, description, isTrue(enabled));
         }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record ProfessionalItem(Long id, Long categoryId, String firstName, String lastName, Boolean enabled) {
-        Professional toDomain() {
+        public Professional toDomain() {
             return new Professional(id, firstName, lastName, categoryId, isTrue(enabled));
         }
     }
@@ -39,7 +39,7 @@ public record SnapshotResponse(
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record ScheduleItem(Long id, Long professionalId, DayOfWeek dayOfWeek, LocalTime startTime,
                                LocalTime endTime, Integer slotDurationMinutes, Boolean enabled) {
-        WeeklySchedule toDomain() {
+        public WeeklySchedule toDomain() {
             int slot = slotDurationMinutes != null ? slotDurationMinutes : 0;
             return new WeeklySchedule(id, professionalId, dayOfWeek, startTime, endTime, slot, isTrue(enabled));
         }
