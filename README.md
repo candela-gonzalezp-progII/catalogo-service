@@ -40,6 +40,8 @@ Decisiones en `documentacion-turnos-prog2` (ADR-001).
      Si está vacío o es corto, la aplicación no arranca (a propósito).
 2. Levantar la base: `docker compose up -d`
 3. Ejecutar: `./gradlew bootRun`
+   Todo en contenedores: `docker compose --profile app up -d --build`.
+   `CORS_ALLOWED_ORIGINS`: orígenes web permitidos (vacío = ninguno).
 
 El `.env` nunca se sube al repositorio (repos públicos). Las credenciales de la cuenta técnica de la cátedra
 solo viven en ese archivo y no se exponen a la app móvil.
