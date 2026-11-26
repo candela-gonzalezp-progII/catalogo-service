@@ -24,6 +24,10 @@ jobs:
       - name: Permisos del wrapper
         run: chmod +x gradlew
 
+      # Docker 29+ exige API >= 1.44; sin esto Testcontainers no encuentra Docker
+      - name: Configurar API de Docker para Testcontainers
+        run: echo "api.version=1.44" > ~/.docker-java.properties
+
       - name: Tests (unitarios + integracion con Testcontainers)
         run: ./gradlew test --no-daemon
 
